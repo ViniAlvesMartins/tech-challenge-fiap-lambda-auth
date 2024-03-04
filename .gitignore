@@ -2,3 +2,7 @@
 .terraform.lock.hcl
 terraform.tfstate
 terraform.tfstate.backup
+provider.tf
+yarn.lock
+node_modules/.yarn-integrity
+archive_files/function.zip
