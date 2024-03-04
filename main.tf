@@ -4,7 +4,7 @@ provider "aws" {
 
 resource "aws_lambda_function" "lambda" {
   function_name    = "lbd-authorizer"
-  role             = aws_iam_role.temp_lambda.arn
+  role             = aws_iam_role.lambda.arn
   handler          = "index.handler"
   runtime          = "nodejs18.x"
   filename         = "lambda.zip"
