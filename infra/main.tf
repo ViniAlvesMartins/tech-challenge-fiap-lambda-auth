@@ -7,5 +7,4 @@ terraform {
       source  = "hashicorp/aws"
     }
   }
-
 }

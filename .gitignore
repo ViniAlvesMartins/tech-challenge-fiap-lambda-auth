@@ -6,3 +6,8 @@ provider.tf
 yarn.lock
 node_modules/.yarn-integrity
 archive_files/function.zip
+node_modules
+package-lock.json
+infra/archive_files/function.zip
+app/dist/index.js.LICENSE.txt
+app/dist/index.js
