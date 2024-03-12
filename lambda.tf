@@ -4,7 +4,7 @@ provider "aws" {
 
 data "archive_file" "main" {
   type        = "zip"
-  source_file  = "./app/dist/index.js"
+  source_file  = "app/dist/index.js"
   output_path = "${path.module}/archive_files/function.zip"
 
   depends_on = [null_resource.main]
