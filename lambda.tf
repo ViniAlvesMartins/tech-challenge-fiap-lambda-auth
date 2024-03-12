@@ -4,8 +4,8 @@ provider "aws" {
 
 data "archive_file" "main" {
   type        = "zip"
-  source_dir  = "/dist"
-  output_path = "${path.module}/archive_files/function.zip"
+  source_dir  = "app/dist"
+  output_path = "app/dist/archive_files/function.zip"
 
   depends_on = [null_resource.main]
 }
@@ -21,7 +21,7 @@ resource "null_resource" "main" {
     yarn
     EOF
 
-    working_dir = "${path.module}/app"
+    working_dir = "app/dist"
   }
 }
 
