@@ -19,13 +19,13 @@ jobs:
         run: cd app && yarn build
 
       - name: Move node_modules to dist
-        run: cd app && mv node_modules dist/node_modules
+        run: mv node_modules dist/node_modules
 
       - name: Zip
         run: (cd app/dist && zip -r ../function.zip .)
 
       - name: Deploy to AWS
-        uses: cd app && appleboy/lambda-action@master
+        uses: appleboy/lambda-action@master
         with:
           aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
