@@ -19,7 +19,7 @@ jobs:
         run: cd app && yarn build
 
       - name: Move node_modules to dist
-        run: mv node_modules dist/node_modules
+        run: cd app && mv node_modules dist/node_modules
 
       - name: Zip
         run: (cd app/dist && zip -r ../function.zip .)
