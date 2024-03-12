@@ -4,7 +4,7 @@ provider "aws" {
 
 data "archive_file" "main" {
   type        = "zip"
-  source_dir  = "app/src"
+  source_dir  = "../app/dist"
   output_path = "${path.module}/archive_files/function.zip"
 
   depends_on = [null_resource.main]
@@ -21,22 +21,31 @@ resource "null_resource" "main" {
     yarn
     EOF
 
-    working_dir = "${path.module}/lambda/function"
+    working_dir = "${path.module}/"
   }
 }
 
 resource "aws_lambda_function" "lambda" {
   function_name    = "lbd-authorizer"
   role             = aws_iam_role.lambda.arn
+  vpc_config {
+    subnet_ids = var.lambda_subnet_ids
+    security_group_ids = var.lambda_security_group_ids
+  }
   handler          = "index.handler"
   runtime          = var.lambda_runtime
-  filename         = "${path.module}/.terraform/archive_files/function.zip"
+  filename         = "${path.module}/archive_files/function.zip"
   timeout          = var.lambda_timeout
   source_code_hash = data.archive_file.main.output_base64sha256
+  environment {
+    variables = {
+      "PUBLIC_KEY" = "aEwg7CU-pgDFKNZet7vFYPPhr_8gVrSn5M9rmfkNiM4"
+    }
+  }
 }
 
 resource "aws_iam_role" "lambda" {
-  name = "lambda-role"
+  name = "lambda-authorizer-role"
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
@@ -53,8 +62,8 @@ resource "aws_iam_role" "lambda" {
 }
 
 resource "aws_iam_role_policy_attachment" "lambda" {
-  policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
-  role       = aws_iam_role.lambda.name
+    role       = aws_iam_role.lambda.name
+    policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole"
 }
 
 resource "aws_lambda_permission" "lambda" {

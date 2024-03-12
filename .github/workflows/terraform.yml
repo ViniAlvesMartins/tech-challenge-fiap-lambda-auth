@@ -1,4 +1,4 @@
-name: Terraform
+name: Build and terraform
 
 on:
   push:
@@ -17,13 +17,23 @@ jobs:
     permissions:
       id-token: write
       contents: read
-
     steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+
+      - name: Install Dependencies
+        run: cd app && npm i
+
+        # build command should be set in your package.json scripts as: "build": "tsc"
+      - name: Build
+        run: cd app && npm run build
+
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
         
         with:
-          role-to-assume: arn:aws:iam::590183718917:role/github
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-1
           
       - name: Checkout
@@ -34,7 +44,7 @@ jobs:
 
       - name: Terraform Init
         id: init
-        run: terraform init
+        run: cd infra && terraform init
 
       # - name: Terraform Format
       #   id: fmt
@@ -42,12 +52,12 @@ jobs:
         
       - name: Terraform Validate
         id: validate
-        run: terraform validate -no-color
+        run: cd infra && terraform validate -no-color
       
       - name: Terraform Plan
         id: plan
         if: github.event_name == 'pull_request'
-        run: terraform plan -no-color -input=false
+        run: cd infra && terraform plan -no-color -input=false
         continue-on-error: true
         
       - name: Update Pull Request
@@ -72,31 +82,14 @@ jobs:
             </details>
 
             *Pushed by: @${{ github.actor }}, Action: \`${{ github.event_name }}\`*`;
-
-
     
       - name: Terraform Plan Status
         if: steps.plan.outcome == 'failure'
         run: exit 1
         
       - name: Terraform Apply
-        if: github.ref == 'refs/heads/main' && github.event_name == 'pull_request'
-        run: terraform apply -auto-approve -input=true 
+        if: github.ref == 'refs/heads/main'
+        run: cd infra && terraform apply -auto-approve -input=true 
         working-directory: ${{ env.working-directory }}
         
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-          
+      
