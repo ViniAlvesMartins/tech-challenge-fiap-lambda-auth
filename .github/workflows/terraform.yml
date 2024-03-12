@@ -44,7 +44,7 @@ jobs:
 
       - name: Terraform Init
         id: init
-        run: cd ../infra && terraform init
+        run: cd infra && terraform init
 
       # - name: Terraform Format
       #   id: fmt
