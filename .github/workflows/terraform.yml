@@ -52,12 +52,12 @@ jobs:
         
       - name: Terraform Validate
         id: validate
-        run: terraform validate -no-color
+        run: cd infra && terraform validate -no-color
       
       - name: Terraform Plan
         id: plan
         if: github.event_name == 'pull_request'
-        run: terraform plan -no-color -input=false
+        run: cd infra && terraform plan -no-color -input=false
         continue-on-error: true
         
       - name: Update Pull Request
@@ -89,7 +89,7 @@ jobs:
         
       - name: Terraform Apply
         if: github.ref == 'refs/heads/main'
-        run: terraform apply -auto-approve -input=true 
+        run: cd infra && terraform apply -auto-approve -input=true 
         working-directory: ${{ env.working-directory }}
         
       
