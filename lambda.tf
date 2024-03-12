@@ -73,3 +73,4 @@ resource "aws_lambda_permission" "lambda" {
   principal     = "apigateway.amazonaws.com"
   source_arn    = "arn:aws:execute-api:us-east-1:590183718917:2k35c7thu4/*"
 }
+
