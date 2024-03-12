@@ -28,8 +28,8 @@ jobs:
       - name: Build
         run: cd app && npm run build
 
-      - name: Zip
-        run: (cd app/dist && zip -r ../../function.zip .)
+      - name: Check
+        run: cd app/dist && ls
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
