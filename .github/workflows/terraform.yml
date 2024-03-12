@@ -22,14 +22,11 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Install Dependencies
-        run: npm i
+        run: cd app && npm i
 
         # build command should be set in your package.json scripts as: "build": "tsc"
       - name: Build
         run: npm run build
-
-      - name: Zip
-        run: (cd app/dist && zip -r ../../lbd-authorizer.zip .)
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
@@ -47,7 +44,7 @@ jobs:
 
       - name: Terraform Init
         id: init
-        run: terraform init
+        run: cd ../infra && terraform init
 
       # - name: Terraform Format
       #   id: fmt
