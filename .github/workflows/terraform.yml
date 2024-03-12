@@ -1,4 +1,4 @@
-name: Terraform
+name: Build and terraform
 
 on:
   push:
@@ -17,8 +17,20 @@ jobs:
     permissions:
       id-token: write
       contents: read
-
     steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+
+      - name: Install Dependencies
+        run: npm i
+
+        # build command should be set in your package.json scripts as: "build": "tsc"
+      - name: Build
+        run: npm run build
+
+      - name: Zip
+        run: (cd app/dist && zip -r ../../lbd-authorizer.zip .)
+
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
         
@@ -83,3 +95,4 @@ jobs:
         run: terraform apply -auto-approve -input=true 
         working-directory: ${{ env.working-directory }}
         
+      
