@@ -23,7 +23,7 @@ resource "aws_lambda_function" "lambda" {
   runtime          = var.lambda_runtime
   filename         = "lambda_function_payload.zip"
   timeout          = var.lambda_timeout
-  source_code_hash = data.archive_file.main.output_base64sha256
+
   environment {
     variables = {
       "PUBLIC_KEY" = "aEwg7CU-pgDFKNZet7vFYPPhr_8gVrSn5M9rmfkNiM4"
