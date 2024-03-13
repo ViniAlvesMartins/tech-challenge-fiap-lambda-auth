@@ -4,8 +4,8 @@ provider "aws" {
 
 data "archive_file" "main" {
   type        = "zip"
-  source_file  = "${path.module}/tech-challenge-fiap-lambda-auth/app/dist/index.js"
-  output_path = "${path.module}/tech-challenge-fiap-lambda-auth/function.zip"
+  source_file  = "${path.module}/app/dist/index.js"
+  output_path = "${path.module}/function.zip"
 }
 
 resource "aws_lambda_function" "lambda" {
@@ -17,7 +17,7 @@ resource "aws_lambda_function" "lambda" {
   }
   handler          = "index.handler"
   runtime          = var.lambda_runtime
-  filename         = "${path.module}/tech-challenge-fiap-lambda-auth/function.zip"
+  filename         = "${path.module}/function.zip"
   timeout          = var.lambda_timeout
   source_code_hash = data.archive_file.main.output_base64sha256
   environment {
