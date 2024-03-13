@@ -2,7 +2,7 @@ provider "aws" {
   region = "us-east-1"
 }
 
-resource "null_resource" "main" {
+resource "null_resource" "lambda_build" {
    triggers = {
     always_run = timestamp()
   }
@@ -23,7 +23,7 @@ resource "aws_lambda_function" "lambda" {
 
   handler          = "index.handler"
   runtime          = var.lambda_runtime
-  filename         = "${path.root}/app/dist/lambda_function_payload.zip"
+  filename         = local_file.zip_info.filename
   timeout          = var.lambda_timeout
 
   environment {
@@ -61,4 +61,15 @@ resource "aws_lambda_permission" "lambda" {
   function_name = aws_lambda_function.lambda.function_name
   principal     = "apigateway.amazonaws.com"
   source_arn    = "arn:aws:execute-api:us-east-1:590183718917:2k35c7thu4/*"
+}
+
+resource "local_file" "zip_info" {
+  depends_on = [null_resource.lambda_build]
+
+  content  = aws_lambda_function.lambda.filename
+  filename = "zip_path.txt"
+}
+
+output "zip_path" {
+  value = local_file.zip_info.filename
 }
