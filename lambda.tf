@@ -2,12 +2,6 @@ provider "aws" {
   region = "us-east-1"
 }
 
-data "archive_file" "main" {
-  type        = "zip"
-  source_file  = "${path.module}/app/dist/index.js"
-  output_path = "${path.module}/archive_files/function.zip"
-}
-
 resource "null_resource" "main" {
    triggers = {
     always_run = timestamp()
