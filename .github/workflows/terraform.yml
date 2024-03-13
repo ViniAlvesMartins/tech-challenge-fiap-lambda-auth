@@ -21,16 +21,6 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v2
 
-      - name: Install Dependencies
-        run: cd app && npm i
-
-        # build command should be set in your package.json scripts as: "build": "tsc"
-      - name: Build
-        run: cd app && npm run build
-
-      - name: Check
-        run: cd app/dist && ls
-
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
         

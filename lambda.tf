@@ -5,7 +5,17 @@ provider "aws" {
 data "archive_file" "main" {
   type        = "zip"
   source_file  = "${path.module}/app/dist/index.js"
-  output_path = "${path.module}/function.zip"
+  output_path = "${path.module}/archive_files/function.zip"
+}
+
+resource "null_resource" "main" {
+   triggers = {
+    always_run = timestamp()
+  }
+
+  provisioner "local-exec" {
+    command = "npm i && npm run build && zip -r lambda_function_payload.zip ."
+  }
 }
 
 resource "aws_lambda_function" "lambda" {
@@ -17,7 +27,7 @@ resource "aws_lambda_function" "lambda" {
   }
   handler          = "index.handler"
   runtime          = var.lambda_runtime
-  filename         = "${path.module}/function.zip"
+  filename         = "lambda_function_payload.zip"
   timeout          = var.lambda_timeout
   source_code_hash = data.archive_file.main.output_base64sha256
   environment {
