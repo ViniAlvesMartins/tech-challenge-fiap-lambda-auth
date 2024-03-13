@@ -8,7 +8,7 @@ resource "null_resource" "main" {
   }
 
   provisioner "local-exec" {
-    command = "npm i && npm run build && zip -r lambda_function_payload.zip ."
+    command = "cd app && npm i && npm run build && cd dist && zip -r lambda_function_payload.zip ../"
   }
 }
 
