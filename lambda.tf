@@ -23,7 +23,7 @@ resource "aws_lambda_function" "lambda" {
 
   handler          = "index.handler"
   runtime          = var.lambda_runtime
-  filename         = file("${path.module}/app/dist/lambda_function_payload.zip")
+  filename         = "${path.module}/app/dist/lambda_function_payload.zip"
   timeout          = var.lambda_timeout
 
   environment {
@@ -31,6 +31,10 @@ resource "aws_lambda_function" "lambda" {
       "PUBLIC_KEY" = "aEwg7CU-pgDFKNZet7vFYPPhr_8gVrSn5M9rmfkNiM4"
     }
   }
+
+  depends_on = [
+    null_resource.lambda_build
+  ]
 }
 
 resource "aws_iam_role" "lambda" {
