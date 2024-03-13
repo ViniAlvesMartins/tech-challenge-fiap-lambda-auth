@@ -21,7 +21,7 @@ resource "aws_lambda_function" "lambda" {
   }
   handler          = "index.handler"
   runtime          = var.lambda_runtime
-  filename         = "${path.module}/app/dist/lambda_function_payload.zip"
+  filename         = "${path.module}/tech-challenge-fiap-lambda-auth/app/dist/lambda_function_payload.zip"
   timeout          = var.lambda_timeout
 
   environment {
