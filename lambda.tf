@@ -15,13 +15,15 @@ resource "null_resource" "main" {
 resource "aws_lambda_function" "lambda" {
   function_name    = "lbd-authorizer"
   role             = aws_iam_role.lambda.arn
+
   vpc_config {
     subnet_ids = var.lambda_subnet_ids
     security_group_ids = var.lambda_security_group_ids
   }
+
   handler          = "index.handler"
   runtime          = var.lambda_runtime
-  filename         = "app/dist/lambda_function_payload.zip"
+  filename         = "${path.root}/app/dist/lambda_function_payload.zip"
   timeout          = var.lambda_timeout
 
   environment {
