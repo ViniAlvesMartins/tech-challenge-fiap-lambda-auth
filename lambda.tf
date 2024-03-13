@@ -23,7 +23,7 @@ resource "aws_lambda_function" "lambda" {
 
   handler          = "index.handler"
   runtime          = var.lambda_runtime
-  filename         = local_file.zip_info.filename
+  filename         = file("${path.module}/app/dist/lambda_function_payload.zip")
   timeout          = var.lambda_timeout
 
   environment {
@@ -61,15 +61,4 @@ resource "aws_lambda_permission" "lambda" {
   function_name = aws_lambda_function.lambda.function_name
   principal     = "apigateway.amazonaws.com"
   source_arn    = "arn:aws:execute-api:us-east-1:590183718917:2k35c7thu4/*"
-}
-
-resource "local_file" "zip_info" {
-  depends_on = [null_resource.lambda_build]
-
-  content  = aws_lambda_function.lambda.filename
-  filename = "zip_path.txt"
-}
-
-output "zip_path" {
-  value = local_file.zip_info.filename
 }
