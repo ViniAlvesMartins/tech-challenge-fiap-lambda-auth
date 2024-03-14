@@ -11,7 +11,7 @@ export const handler = async (event: any) => {
     const verifier = CognitoJwtVerifier.create({
       userPoolId: "us-east-1_xum9ekqkH",
       tokenUse: "access",
-      clientId: "hk6lfc2knq0q6mnpdoov9hvrk",
+      clientId: "371g5rnln41qgrjfa7qe2qhf2",
     })
 
     try {
