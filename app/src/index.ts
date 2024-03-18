@@ -16,7 +16,7 @@ export const handler = async (event: any) => {
 
     try {
       const payload = await verifier.verify(token);
-      console.log("Token is valid. Payload:", payload);
+      console.log("Token is valid.");
     } catch {
       console.log("Token not valid!");
       return 'Unauthorized';

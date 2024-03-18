@@ -1,5 +1,11 @@
 provider "aws" {
   region = "us-east-1"
+
+  backend "s3" {
+    bucket = "state-version-tech"
+    key = "terraform-lambda-auth-state"
+    region = "us-east-1"
+  }
 }
 
 resource "null_resource" "lambda_build" {
