@@ -1,13 +1,13 @@
 variable "lambda_subnet_ids" {
   description = "List of subnets in which the action runners will be launched, the subnets needs to be subnets in the `vpc_id`."
   type        = list(string)
-  default     = ["subnet-063e56bb28d5750f7", "subnet-0e7cf64a4ce1aeb12", "subnet-065288fe2dc10e54a"]
+  default     = ["subnet-0af34428cb95663d9"]
 }
 
 variable "lambda_security_group_ids" {
   description = "List of security group IDs associated with the Lambda function."
   type        = list(string)
-  default     = ["sg-0bc2e1593aabab341"]
+  default     = ["sg-0875af1d04f8ee5ed"]
 }
 
 variable "lambda_zip" {
