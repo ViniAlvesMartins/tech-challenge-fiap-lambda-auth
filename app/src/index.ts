@@ -2,7 +2,7 @@ import { CognitoJwtVerifier } from "aws-jwt-verify";
 
 export const handler = async (event: any) => {
   var authResponse;
-  var token = event.headers.authorization;
+  var token = event.headers.Authorization;
 
   if (token == "anonymous") {
     console.log("Anonymous login sucess!");
