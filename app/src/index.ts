@@ -14,28 +14,21 @@ export const handler = async (event: any) => {
       clientId: "371g5rnln41qgrjfa7qe2qhf2",
     })
 
+    var result;
     try {
-      const payload = await verifier.verify(token);
+      result = await verifier.verify(token);
       console.log("Token is valid.");
     } catch {
       console.log("Token not valid!");
       return 'Unauthorized';
     }
-    authResponse = buildAllowAllPolicy(event, "UserCognito", "Allow")
+    authResponse = buildAllowAllPolicy(event, result.username, "Allow")
   }
 
   return authResponse;
 };
 
 function buildAllowAllPolicy(event: any, principalId: string, effect: string) {
-  var tmp = event.methodArn.split(':')
-  var apiGatewayArnTmp = tmp[5].split('/')
-  var awsAccountId = tmp[4]
-  var awsRegion = tmp[3]
-  var restApiId = apiGatewayArnTmp[0]
-  var stage = apiGatewayArnTmp[1]
-  var apiArn = 'arn:aws:execute-api:' + awsRegion + ':' + awsAccountId + ':' +
-    restApiId + '/' + stage + '/*/*'
   const policy = {
     principalId: principalId,
     policyDocument: {
@@ -44,7 +37,7 @@ function buildAllowAllPolicy(event: any, principalId: string, effect: string) {
         {
           Action: 'execute-api:Invoke',
           Effect: effect,
-          Resource: [apiArn]
+          Resource: [event.methodArn]
         }
       ]
     }
